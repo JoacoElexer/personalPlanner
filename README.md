@@ -1,32 +1,79 @@
-# React + TypeScript + Vite
+# Personal Planner
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Planificador personal multiplataforma (Android y Windows desktop) con tareas,
+sub-tareas y categorías, persistencia **local-first** y sincronización en la nube
+con **Supabase**. Una sola base de código web (React + Vite + TypeScript) empaquetada
+con **Capacitor**.
 
-Currently, two official plugins are available:
+## Características
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **Tareas**: título, descripción, categoría, estado, prioridad, deadline (fecha y
+  hora) y agenda para el calendario (día + rango horario).
+- **Sub-tareas**: estructura jerárquica ilimitada (auto-relación en la misma tabla).
+- **Categorías**: color + icono, agrupación y conteo de tareas.
+- **Vistas inteligentes**: buckets por vencimiento (Vencidas / Hoy / Próximas / Más
+  adelante / Sin fecha / Completadas), búsqueda y filtros.
+- **Offline-first**: todo el CRUD se guarda al instante en `localStorage` y se
+  sincroniza con la nube cuando hay conexión (realtime incluido).
+- **Auth**: email + contraseña con Supabase Auth, RLS por usuario.
 
-## React Compiler
+## Estado del proyecto
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+| Módulo | Estado |
+| --- | --- |
+| Auth | ✅ Implementado |
+| Tareas + sub-tareas | ✅ Implementado |
+| Categorías | ✅ Implementado |
+| Sincronización local-first + Supabase | ✅ Implementado |
+| Dashboard (widgets/gráficos) | 🚧 Fase 4 (próxima) |
+| Calendario (semana/mes) | 🚧 Fase 4 (próxima) |
 
-## Expanding the Oxlint configuration
+## Stack
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
+React 19 · TypeScript 6 · Vite 8 · Tailwind v4 · shadcn/ui · Zustand ·
+react-hook-form + zod · date-fns · Supabase · Capacitor (Android + Electron ·
+desktop Windows) · Vitest · oxlint · Prettier
 
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+## Cómo empezar
+
+```bash
+npm install
+npm run dev          # http://localhost:5173
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+Sin credenciales de Supabase la app arranca igual y muestra las instrucciones de
+configuración. Para activar la nube:
+
+1. Creamos un proyecto en [supabase.com](https://supabase.com).
+2. Ejecutamos la migración `supabase/migrations/0001_init.sql` (SQL Editor o
+   `supabase db push`).
+3. Copiamos `VITE_SUPABASE_URL` y `VITE_SUPABASE_ANON_KEY` a un archivo `.env`
+   (ver `.env.example`).
+
+## Scripts
+
+```bash
+npm run dev            # dev server
+npm run typecheck      # tsc -b
+npm run lint           # oxlint
+npm test               # vitest run
+npm run build          # tsc -b && vite build
+npm run android:sync   # build + cap sync android
+npm run android:open   # Android Studio
+npm run desktop:sync   # build + cap sync @capawesome/capacitor-electron
+npm run desktop:run    # app desktop (Windows)
+npm run desktop:package
+```
+
+## Documentación
+
+- **`docs/README.md`** — documentación técnica completa (arquitectura, módulos,
+  backend, conexión a la base en la nube, reproducción paso a paso para otro dev).
+- **`AGENTS.md`** — contexto del proyecto para agentes de programación (convenciones,
+  comandos, mapa de módulos).
+
+## Roadmap
+
+- **Fase 4**: calendario semana/mes + dashboard con widgets y gráficos
+  personalizables (config local, sin sync) usando recharts.
+- Fases posteriores: notificaciones, configuración avanzada, etc.
