@@ -1,0 +1,6 @@
+dist
+node_modules
+android
+electron/build
+electron/app
+src/index.css
