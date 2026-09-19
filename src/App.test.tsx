@@ -1,20 +1,11 @@
 import { render, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import App from './App'
 
 describe('App', () => {
-  it('renderiza el título y el contador funciona', async () => {
-    const user = userEvent.setup()
+  it('muestra las instrucciones de configuración sin credenciales de Supabase', async () => {
     render(<App />)
-
     expect(
-      screen.getByRole('heading', { name: /personal planner/i }),
-    ).toBeInTheDocument()
-
-    const button = screen.getByRole('button', { name: /contador: 0/i })
-    await user.click(button)
-    expect(
-      screen.getByRole('button', { name: /contador: 1/i }),
+      await screen.findByText(/configuración de supabase pendiente/i),
     ).toBeInTheDocument()
   })
 })
