@@ -25,6 +25,9 @@ electron/app
 supabase/.temp
 supabase/.branches
 
+# Docs (local, no se versiona per decisión del equipo)
+docs/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
