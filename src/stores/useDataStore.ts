@@ -84,7 +84,7 @@ export const useDataStore = create<DataState>((set, get) => ({
       scheduled_date: input.scheduled_date ?? null,
       scheduled_start: input.scheduled_start ?? null,
       scheduled_end: input.scheduled_end ?? null,
-      completed_at: null,
+      completed_at: input.status === 'done' ? timestamp : null,
       created_at: timestamp,
       updated_at: timestamp,
       deleted: false,
@@ -103,7 +103,17 @@ export const useDataStore = create<DataState>((set, get) => ({
     set((s) => ({
       tasks: s.tasks.map((t) => {
         if (t.id !== id) return t
-        updated = { ...t, ...patch, id, updated_at: timestamp }
+        const withStatusPatch =
+          'status' in patch && t.status !== patch.status
+            ? { completed_at: patch.status === 'done' ? timestamp : null }
+            : {}
+        updated = {
+          ...t,
+          ...patch,
+          ...withStatusPatch,
+          id,
+          updated_at: timestamp,
+        }
         return updated
       }),
     }))
